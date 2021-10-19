@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "stock-transactions-app"
+    }
+  },
+  "defaultProject": "stock-transactions-app",
+  "cli": {
+    "analytics": false
+  }
 }
