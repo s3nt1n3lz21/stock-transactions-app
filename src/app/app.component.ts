@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'stock-transactions-app';
   transactions: Transaction[] = [];
   cumulativeCashflow: number;
+  editMode: boolean = false;
 
   constructor(
     private _apiService: ApiService,

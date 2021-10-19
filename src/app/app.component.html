@@ -28,7 +28,7 @@
                       <td class="text-right"><span class="text-muted">{{transaction.shares}}</span></td>
                       <td class="text-right">&pound;{{transaction.value}}</td>
                       <td class="text-right text-success">+&pound;{{transaction.cashflow}}</td>
-                      <td class="text-right"><a href="#">Edit</a></td>
+                      <td class="text-right"><a href="#" (click)="editMode = true">Edit</a></td>
                       <td class="text-right"><a href="#">Delete</a></td>
                   </tr>
               </tbody>
@@ -45,7 +45,8 @@
 
   <div class="card mt-4">
       <div class="card-body">
-          <h3>Add transaction</h3>
+          <h3 *ngIf="!editMode">Add transaction</h3>
+          <h3 *ngIf="editMode">Edit transaction</h3>
           <form>
               <div class="form-group">
                   <label for="date">Date</label>
@@ -78,7 +79,9 @@
                       <input type="number" class="form-control" id="value">
                   </div>
               </div>
-              <button type="submit" class="btn btn-primary">Add transaction</button>
+              <button *ngIf="!editMode" type="submit" class="btn btn-primary">Add transaction</button>
+              <button *ngIf="editMode" type="submit" class="btn btn-primary">Update transaction</button>
+              <button *ngIf="editMode" class="btn btn-primary" (click)="editMode = false">Cancel</button>
           </form>
       </div>
   </div>
