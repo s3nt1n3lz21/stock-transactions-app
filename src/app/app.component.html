@@ -1,9 +1,9 @@
 <div class="container">
   <div class="card mt-4">
       <div class="card-body">
-          <div class="alert alert-success" role="alert">Transaction added!</div>
-          <div class="alert alert-primary" role="alert">Transaction updated!</div>
-          <div class="alert alert-danger" role="alert">Transaction deleted!</div>
+          <div *ngIf="showAddedAlert" class="alert alert-success" role="alert">Transaction added!</div>
+          <div *ngIf="showUpdatedAlert" class="alert alert-primary" role="alert">Transaction updated!</div>
+          <div *ngIf="showDeletedAlert" class="alert alert-danger" role="alert">Transaction deleted!</div>
 
           <table class="table">
               <thead>
@@ -29,7 +29,7 @@
                       <td class="text-right">&pound;{{transaction.value}}</td>
                       <td class="text-right text-success">+&pound;{{transaction.cashflow}}</td>
                       <td class="text-right"><a href="#" (click)="editMode = true">Edit</a></td>
-                      <td class="text-right"><a href="#">Delete</a></td>
+                      <td class="text-right"><a href="#" (click)="deleteTransaction(transaction.id)">Delete</a></td>
                   </tr>
               </tbody>
               <tfoot>
