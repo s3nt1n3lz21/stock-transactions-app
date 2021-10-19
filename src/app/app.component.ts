@@ -11,6 +11,7 @@ import { Transaction } from './ITransaction';
 export class AppComponent implements OnInit {
   title = 'stock-transactions-app';
   transactions: Transaction[] = [];
+  cumulativeCashflow: number;
 
   constructor(
     private _apiService: ApiService,
@@ -19,8 +20,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this._apiService.getTransactions().subscribe((response: { transactions: Transaction[]}) => {
       this.transactions = response.transactions;
+      this.recalculateCashflow();
       console.log('transactions: ', this.transactions);
     })
+  }
+
+  recalculateCashflow() {
+    let cashflow = 0;
+    this.transactions.forEach((transaction) => {
+      cashflow += transaction.cashflow;
+    });
+    this.cumulativeCashflow = cashflow;
   }
 
   createTransaction() {
