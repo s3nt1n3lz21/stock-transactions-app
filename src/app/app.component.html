@@ -28,7 +28,7 @@
                       <td class="text-right"><span class="text-muted">{{transaction.shares}}</span></td>
                       <td class="text-right">&pound;{{transaction.value}}</td>
                       <td class="text-right text-success">+&pound;{{transaction.cashflow}}</td>
-                      <td class="text-right"><a href="#" (click)="editMode = true">Edit</a></td>
+                      <td class="text-right"><a href="#" (click)="fillEditForm(transaction)">Edit</a></td>
                       <td class="text-right"><a href="#" (click)="deleteTransaction(transaction.id)">Delete</a></td>
                   </tr>
               </tbody>
