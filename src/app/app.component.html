@@ -20,7 +20,7 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr>
+                  <tr *ngFor="let transaction of transactions">
                       <th scope="row">1</th>
                       <td>12/06/2019</td>
                       <td>Deposit</td>
@@ -28,39 +28,6 @@
                       <td class="text-right"><span class="text-muted">n/a</span></td>
                       <td class="text-right">&pound;5,000</td>
                       <td class="text-right text-success">+&pound;5,000</td>
-                      <td class="text-right"><a href="#">Edit</a></td>
-                      <td class="text-right"><a href="#">Delete</a></td>
-                  </tr>
-                  <tr>
-                      <th scope="row">2</th>
-                      <td>15/06/2019</td>
-                      <td>Buy</td>
-                      <td>Gulf Keystone Petroleum</td>
-                      <td class="text-right">118</td>
-                      <td class="text-right">&pound;1,200</td>
-                      <td class="text-right text-danger">-&pound;1,200</td>
-                      <td class="text-right"><a href="#">Edit</a></td>
-                      <td class="text-right"><a href="#">Delete</a></td>
-                  </tr>
-                  <tr>
-                      <th scope="row">3</th>
-                      <td>01/11/2019</td>
-                      <td>Sell</td>
-                      <td>Gulf Keystone Petroleum</td>
-                      <td class="text-right">34</td>
-                      <td class="text-right">&pound;720</td>
-                      <td class="text-right text-success">+&pound;720</td>
-                      <td class="text-right"><a href="#">Edit</a></td>
-                      <td class="text-right"><a href="#">Delete</a></td>
-                  </tr>
-                  <tr>
-                      <th scope="row">4</th>
-                      <td>05/01/2020</td>
-                      <td>Withdraw</td>
-                      <td><span class="text-muted">n/a</span></td>
-                      <td class="text-right"><span class="text-muted">n/a</span></td>
-                      <td class="text-right">&pound;1,000</td>
-                      <td class="text-right text-danger">-&pound;1,000</td>
                       <td class="text-right"><a href="#">Edit</a></td>
                       <td class="text-right"><a href="#">Delete</a></td>
                   </tr>

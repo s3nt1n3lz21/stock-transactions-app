@@ -10,15 +10,16 @@ import { Transaction } from './ITransaction';
 })
 export class AppComponent implements OnInit {
   title = 'stock-transactions-app';
-  transactions: Transaction[];
+  transactions: Transaction[] = [];
 
   constructor(
     private _apiService: ApiService,
   ) {}
 
   ngOnInit() {
-    this._apiService.getTransactions().subscribe((transactions) => {
-      console.log('transactions: ', transactions);
+    this._apiService.getTransactions().subscribe((response: { transactions: Transaction[]}) => {
+      this.transactions = response.transactions;
+      console.log('transactions: ', this.transactions);
     })
   }
 
