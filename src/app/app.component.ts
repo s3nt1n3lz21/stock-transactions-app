@@ -21,4 +21,22 @@ export class AppComponent implements OnInit {
       console.log('transactions: ', transactions);
     })
   }
+
+  createTransaction() {
+    // this._apiService.createTransaction(transaction).subscribe((response) => {
+    //   console.log('response: ', response);
+    // })
+  }
+
+  updateTransaction() {
+    // this._apiService.updateTransaction(transaction).subscribe((response) => {
+    //   console.log('response: ', response);
+    // })
+  }
+
+  deleteTransaction() {
+    // this._apiService.deleteTransaction(transactionId).subscribe((response) => {
+    //   console.log('response: ', response);
+    // })
+  }
 }
