@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from './api.service';
 import { Transaction } from './ITransaction';
 
 
@@ -11,11 +12,13 @@ export class AppComponent implements OnInit {
   title = 'stock-transactions-app';
   transactions: Transaction[];
 
-  constructor() {}
+  constructor(
+    private _apiService: ApiService,
+  ) {}
 
   ngOnInit() {
-    this.apiService.getTransactions().subscribe((transactions) => {
-
+    this._apiService.getTransactions().subscribe((transactions) => {
+      console.log('transactions: ', transactions);
     })
   }
 }
