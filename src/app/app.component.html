@@ -21,13 +21,13 @@
               </thead>
               <tbody>
                   <tr *ngFor="let transaction of transactions">
-                      <th scope="row">1</th>
-                      <td>12/06/2019</td>
-                      <td>Deposit</td>
-                      <td><span class="text-muted">n/a</span></td>
-                      <td class="text-right"><span class="text-muted">n/a</span></td>
-                      <td class="text-right">&pound;5,000</td>
-                      <td class="text-right text-success">+&pound;5,000</td>
+                      <th scope="row">{{transaction.id}}</th>
+                      <td>{{transaction.date}}</td>
+                      <td>{{transaction.type}}</td>
+                      <td><span class="text-muted">{{transaction.security}}</span></td>
+                      <td class="text-right"><span class="text-muted">{{transaction.shares}}</span></td>
+                      <td class="text-right">&pound;{{transaction.value}}</td>
+                      <td class="text-right text-success">+&pound;{{transaction.cashflow}}</td>
                       <td class="text-right"><a href="#">Edit</a></td>
                       <td class="text-right"><a href="#">Delete</a></td>
                   </tr>
