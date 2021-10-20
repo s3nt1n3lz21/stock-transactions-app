@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
 
@@ -32,10 +32,13 @@ describe('ApiService', () => {
     it('should call the correct api for creating a transaction', () => {
         const httpClient = TestBed.inject(HttpClient);
         const spy = spyOn(httpClient, 'post');
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8'
+        });
 
         service.createTransaction(newTransaction);
 
-        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions');
+        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions', newTransaction, jasmine.any(Object));
     });
 
     it('should call the correct api for deleting a transaction', () => {
@@ -44,22 +47,21 @@ describe('ApiService', () => {
 
         service.deleteTransaction(transaction.id.toString());
 
-        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions');
+        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions/' + transaction.id);
     });
 
     it('should call the correct api for updating a transaction', () => {
         const httpClient = TestBed.inject(HttpClient);
         const spy = spyOn(httpClient, 'put');
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json; charset=utf-8'
+        });
 
         service.updateTransaction(transaction);
 
-        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions');
+        expect(spy).toHaveBeenCalledWith('https://transactions-challenge.test.stockopedia.com//api/v1/transactions/' + transaction.id, transaction, jasmine.any(Object));
     });
 });
 
-
-
-function HTTPClient(HTTPClient: any): any {
-    throw new Error('Function not implemented.');
-}
 // Further Tests To Write
+// Check http headers are correct

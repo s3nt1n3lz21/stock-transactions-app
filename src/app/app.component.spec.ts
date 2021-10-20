@@ -1,18 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { configureTestingModule } from './testing-utils';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  });
+  beforeEach(waitForAsync(() => {
+    configureTestingModule({
+        declarations: [
+            AppComponent,
+        ]
+    });
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -20,24 +17,22 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'stock-transactions-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('stock-transactions-app');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('stock-transactions-app app is running!');
-  });
+  // it('should render title', () => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   fixture.detectChanges();
+  //   const compiled = fixture.nativeElement;
+  //   expect(compiled.querySelector('.content span').textContent).toContain('stock-transactions-app app is running!');
+  // });
 });
 
   // Todo
   // Add one test of each type
 
-  // Tests
-  // Check we get an error if the 
-  // Check the transaction is updated in the table correctly
-  // Check adding a new transaction on the api works correc
+  // Further Tests To Write
+  // Check adding a transaction adds to the list of transactions
+  // Check updating a transaction updates the list of transactions
+  // Tests to check the form of the api requests are all okay
+  // Tests to check each button calls the right function
+  // Tests to check value and cashflow are displayed in the right form in the table
+  // Check notifications are displayed when editing, adding, deleting transactions
+  // Check we handle errors correctly

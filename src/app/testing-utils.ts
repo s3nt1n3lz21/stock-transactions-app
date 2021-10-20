@@ -39,8 +39,10 @@ const MockActivatedRoute = {
 };
 
 class HttpClientMock {
-    public get = (path) => of(0);
-    public post = () => {};
+    public get = () => of(0);
+    public post = () => of(0);
+    public delete = () => of(0);
+    public put = () => of(0);
 }
 
 class ApiServiceMock {
