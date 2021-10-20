@@ -217,7 +217,10 @@ export class AppComponent implements OnInit {
    } 
   }
 
-
+  cancel() {
+    this.editMode = false;
+    this.transactionForm.reset();
+  }
   // Further work could include:
   // Form validation
   // Add a confirmation of transaction deletion modal
