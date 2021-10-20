@@ -18,7 +18,7 @@ export interface Transaction {
 
 export function emptyTransaction(): Transaction {
     return {
-        id: -1,
+        id: 0,
         type: TransactionType.Buy,
         date: '',
         value: 0,

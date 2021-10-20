@@ -55,10 +55,12 @@ export class AppComponent implements OnInit {
       ...this.transactionForm.value
     };
     newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
+    newTransaction.type = this.convertTransactionTypeApi(newTransaction.type);
 
     this._apiService.createTransaction(newTransaction).subscribe(
       (response) => {
         console.log('response: ', response);
+        this.transactions.push(newTransaction);
         this.showAddedAlert = true;
         setTimeout(() => {
           this.showAddedAlert = false;
@@ -150,11 +152,23 @@ export class AppComponent implements OnInit {
     return Math.abs(number);
   }
 
+  convertTransactionTypeApi(transactionType: string) {
+    switch(transactionType) { 
+      case 'Withdraw': { 
+         return 'withdrawal'
+      }
+      default: { 
+         return transactionType.toLowerCase();
+      } 
+   } 
+  }
+
 
   // Further work could include:
   // Form validation
   // Add a confirmation of transaction deletion modal
   // Show error message if updating/adding failed, finish handleError method
+  // Add another input on the form for the time of the transaction
 
   // Todo
   // Set the id of the transaction based on whats returned
@@ -163,7 +177,6 @@ export class AppComponent implements OnInit {
   // Update should update it on our app if successful api
   // Get dropdown showing correct value
   // Get date filling in the right value
-  // Format the dates and other formatting
   // Set data types of api responses
   // Add one test of each type
 }
