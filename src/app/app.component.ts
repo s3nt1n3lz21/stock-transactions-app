@@ -50,21 +50,7 @@ export class AppComponent implements OnInit {
     this.cumulativeCashflow = cashflow;
   }
 
-  createTransaction() {
-    const newTransaction: NewTransaction = emptyTransaction();
-
-    console.log('form date: ', this.transactionForm.controls.date.value)
-
-    newTransaction.date = new Date(this.transactionForm.controls.date.value).toISOString();
-    newTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
-    
-    if (newTransaction.type == 'buy' || newTransaction.type == 'sell') {
-      newTransaction.security = this.transactionForm.controls.security.value;
-      newTransaction.shares = this.transactionForm.controls.shares.value;
-    }
-    
-    newTransaction.value = this.transactionForm.controls.value.value*100;
-    newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
+  createTransaction(newTransaction: NewTransaction) {
 
     this._apiService.createTransaction(newTransaction).subscribe(
       (response) => {
@@ -87,26 +73,14 @@ export class AppComponent implements OnInit {
     )
   }
 
-  updateTransaction() {
-    const editedTransaction: Transaction = this.selectedTransaction;
+  updateTransaction(transaction: Transaction) {
 
-    editedTransaction.date = this.transactionForm.controls.date.value;
-    editedTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
-    
-    if (editedTransaction.type == 'buy' || editedTransaction.type == 'sell') {
-      editedTransaction.security = this.transactionForm.controls.security.value;
-      editedTransaction.shares = this.transactionForm.controls.shares.value;
-    }
-    
-    editedTransaction.value = this.transactionForm.controls.value.value;
-    editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
-
-    this._apiService.updateTransaction(editedTransaction).subscribe(
+    this._apiService.updateTransaction(transaction).subscribe(
       (response) => {
         console.log('response: ', response);
 
-        let index = this.transactions.findIndex((t) => t.id == this.selectedTransaction.id);
-        this.transactions[index] = editedTransaction;
+        let index = this.transactions.findIndex((t) => t.id == transaction.id);
+        this.transactions[index] = transaction;
 
         this.showUpdatedAlert = true;
         setTimeout(() => {
@@ -149,9 +123,37 @@ export class AppComponent implements OnInit {
 
   submit() {
     if (this.editMode) {
-      this.updateTransaction();
+
+      const editedTransaction: Transaction = this.selectedTransaction;
+
+      editedTransaction.date = this.transactionForm.controls.date.value;
+      editedTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
+      
+      if (editedTransaction.type == 'buy' || editedTransaction.type == 'sell') {
+        editedTransaction.security = this.transactionForm.controls.security.value;
+        editedTransaction.shares = this.transactionForm.controls.shares.value;
+      }
+      
+      editedTransaction.value = this.transactionForm.controls.value.value;
+      editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
+
+      this.updateTransaction(editedTransaction);
     } else {
-      this.createTransaction();
+
+      const newTransaction: NewTransaction = emptyTransaction();
+
+      newTransaction.date = new Date(this.transactionForm.controls.date.value).toISOString();
+      newTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
+      
+      if (newTransaction.type == 'buy' || newTransaction.type == 'sell') {
+        newTransaction.security = this.transactionForm.controls.security.value;
+        newTransaction.shares = this.transactionForm.controls.shares.value;
+      }
+      
+      newTransaction.value = this.transactionForm.controls.value.value*100;
+      newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
+
+      this.createTransaction(newTransaction);
     }
 
     this.recalculateCashflow();
