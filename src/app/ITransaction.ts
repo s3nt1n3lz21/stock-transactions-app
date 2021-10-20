@@ -1,11 +1,6 @@
 import { FormGroup } from "@angular/forms";
 
-export enum TransactionType {
-    Buy,
-    Sell,
-    Deposit,
-    Withdrawal
-  }
+export type TransactionType = 'buy' | 'sell' | 'deposit' | 'withdrawal';
 export interface Transaction {
     id: number;
     type: TransactionType;
@@ -19,7 +14,7 @@ export interface Transaction {
 export function emptyTransaction(): Transaction {
     return {
         id: 0,
-        type: TransactionType.Buy,
+        type: 'buy',
         date: '',
         value: 0,
         cashflow: 0,
@@ -29,7 +24,7 @@ export function emptyTransaction(): Transaction {
 }
 
 export interface TransactionFormValues {
-    type: TransactionType;
+    type: 'Buy' | 'Sell' | 'Withdraw' | 'Deposit';
     date: string;
     value: number;
     security: string; // name of stock

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from './api.service';
-import { emptyTransaction, Transaction, TransactionForm, TransactionType } from './ITransaction';
+import { emptyTransaction, Transaction, TransactionForm, TransactionFormValues, TransactionType } from './ITransaction';
 
 
 @Component({
@@ -50,12 +50,14 @@ export class AppComponent implements OnInit {
   }
 
   createTransaction() {
-    const newTransaction: Transaction = {
-      ...emptyTransaction(),
-      ...this.transactionForm.value
-    };
+    const newTransaction: Transaction = emptyTransaction();
+
+    newTransaction.date = this.transactionForm.controls.date.value;
+    newTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
+    newTransaction.security = this.transactionForm.controls.security.value;
+    newTransaction.shares = this.transactionForm.controls.shares.value;
+    newTransaction.value = this.transactionForm.controls.value.value;
     newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
-    newTransaction.type = this.convertTransactionTypeApi(newTransaction.type);
 
     this._apiService.createTransaction(newTransaction).subscribe(
       (response) => {
@@ -73,7 +75,7 @@ export class AppComponent implements OnInit {
   }
 
   updateTransaction() {
-    const editedTransaction: Transaction = {
+    const editedTransaction: TransactionFormValues = {
       ...this.selectedTransaction,
       ...this.transactionForm.value
     };
@@ -129,7 +131,7 @@ export class AppComponent implements OnInit {
   }
 
   calculateTransactionCashflow(transaction: Transaction) {
-    if (transaction.type == TransactionType.Buy || transaction.type == TransactionType.Withdrawal) {
+    if (transaction.type == 'buy' || transaction.type == 'withdrawal') {
       return -transaction.value;
     } else {
       return transaction.value;
@@ -152,14 +154,20 @@ export class AppComponent implements OnInit {
     return Math.abs(number);
   }
 
-  convertTransactionTypeApi(transactionType: string) {
+  convertTransactionTypeApi(transactionType: string): TransactionType {
     switch(transactionType) { 
       case 'Withdraw': { 
-         return 'withdrawal'
+         return 'withdrawal';
       }
-      default: { 
-         return transactionType.toLowerCase();
-      } 
+      case 'Buy': { 
+        return 'buy';
+      }
+      case 'Sell': { 
+        return 'sell';
+      }
+      case 'Deposit': { 
+        return 'deposit';
+      }
    } 
   }
 
