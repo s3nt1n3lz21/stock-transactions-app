@@ -134,7 +134,7 @@ export class AppComponent implements OnInit {
         editedTransaction.shares = this.transactionForm.controls.shares.value;
       }
       
-      editedTransaction.value = this.transactionForm.controls.value.value;
+      editedTransaction.value = this.transactionForm.controls.value.value*100;
       editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
 
       this.updateTransaction(editedTransaction);
