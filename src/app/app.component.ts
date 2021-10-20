@@ -75,10 +75,13 @@ export class AppComponent implements OnInit {
   }
 
   updateTransaction() {
-    const editedTransaction: TransactionFormValues = {
-      ...this.selectedTransaction,
-      ...this.transactionForm.value
-    };
+    const editedTransaction: Transaction = this.selectedTransaction;
+
+    editedTransaction.date = this.transactionForm.controls.date.value;
+    editedTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
+    editedTransaction.security = this.transactionForm.controls.security.value;
+    editedTransaction.shares = this.transactionForm.controls.shares.value;
+    editedTransaction.value = this.transactionForm.controls.value.value;
     editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
 
     this._apiService.updateTransaction(editedTransaction).subscribe(
