@@ -11,15 +11,21 @@ export interface Transaction {
     shares?: number;
 }
 
-export function emptyTransaction(): Transaction {
+export interface NewTransaction {
+    type: TransactionType,
+    date: string,
+    value: number,
+    cashflow: number,
+    security?: string; // name of stock
+    shares?: number;
+}
+
+export function emptyTransaction(): NewTransaction {
     return {
-        id: 0,
         type: 'buy',
         date: '',
         value: 0,
         cashflow: 0,
-        security: '', // name of stock
-        shares: 0,
     };
 }
 

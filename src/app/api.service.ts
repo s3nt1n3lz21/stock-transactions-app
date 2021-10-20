@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Transaction } from "./ITransaction";
+import { NewTransaction, Transaction } from "./ITransaction";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +16,7 @@ export class ApiService {
         return this._http.get<{ transactions: Transaction[] }>(_url);
     }
 
-    public createTransaction(transaction: Transaction): Observable<Transaction> {
+    public createTransaction(transaction: NewTransaction): Observable<Transaction> {
         const _url = `https://transactions-challenge.test.stockopedia.com//api/v1/transactions`;
         const headers = new HttpHeaders({
             'Content-Type': 'application/json; charset=utf-8'

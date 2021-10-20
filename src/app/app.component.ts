@@ -1,7 +1,8 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from './api.service';
-import { emptyTransaction, Transaction, TransactionForm, TransactionFormValues, TransactionType } from './ITransaction';
+import { emptyTransaction, NewTransaction, Transaction, TransactionForm, TransactionFormValues, TransactionType } from './ITransaction';
 
 
 @Component({
@@ -50,19 +51,29 @@ export class AppComponent implements OnInit {
   }
 
   createTransaction() {
-    const newTransaction: Transaction = emptyTransaction();
+    const newTransaction: NewTransaction = emptyTransaction();
 
-    newTransaction.date = this.transactionForm.controls.date.value;
+    newTransaction.date = new Date(this.transactionForm.controls.date.value).toISOString();
     newTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
-    newTransaction.security = this.transactionForm.controls.security.value;
-    newTransaction.shares = this.transactionForm.controls.shares.value;
-    newTransaction.value = this.transactionForm.controls.value.value;
+    
+    if (newTransaction.type == 'buy' || newTransaction.type == 'sell') {
+      newTransaction.security = this.transactionForm.controls.security.value;
+      newTransaction.shares = this.transactionForm.controls.shares.value;
+    }
+    
+    newTransaction.value = this.transactionForm.controls.value.value*100;
     newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
 
     this._apiService.createTransaction(newTransaction).subscribe(
       (response) => {
         console.log('response: ', response);
-        this.transactions.push(newTransaction);
+
+        const finalTransaction: Transaction = {
+          ...newTransaction,
+          ...{ id: response.id }
+        }
+
+        this.transactions.push(finalTransaction);
         this.showAddedAlert = true;
         setTimeout(() => {
           this.showAddedAlert = false;
@@ -79,14 +90,22 @@ export class AppComponent implements OnInit {
 
     editedTransaction.date = this.transactionForm.controls.date.value;
     editedTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
-    editedTransaction.security = this.transactionForm.controls.security.value;
-    editedTransaction.shares = this.transactionForm.controls.shares.value;
+    
+    if (editedTransaction.type == 'buy' || editedTransaction.type == 'sell') {
+      editedTransaction.security = this.transactionForm.controls.security.value;
+      editedTransaction.shares = this.transactionForm.controls.shares.value;
+    }
+    
     editedTransaction.value = this.transactionForm.controls.value.value;
     editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
 
     this._apiService.updateTransaction(editedTransaction).subscribe(
       (response) => {
         console.log('response: ', response);
+
+        let index = this.transactions.findIndex((t) => t.id == this.selectedTransaction.id);
+        this.transactions[index] = editedTransaction;
+
         this.showUpdatedAlert = true;
         setTimeout(() => {
           this.showUpdatedAlert = false;
@@ -102,6 +121,9 @@ export class AppComponent implements OnInit {
     this._apiService.deleteTransaction(transactionId).subscribe(
       (response) => {
         console.log('response: ', response);
+
+        let index = this.transactions.findIndex((t) => t.id.toString() == transactionId);
+        this.transactions.splice(index, 1);
         this.showDeletedAlert = true;
         setTimeout(() => {
           this.showDeletedAlert = false;
@@ -183,11 +205,7 @@ export class AppComponent implements OnInit {
 
   // Todo
   // Set the id of the transaction based on whats returned
-  // Delete should remove it from our apps list if deletion successful
-  // Add should add it to our apps list if successful
-  // Update should update it on our app if successful api
   // Get dropdown showing correct value
   // Get date filling in the right value
-  // Set data types of api responses
   // Add one test of each type
 }
