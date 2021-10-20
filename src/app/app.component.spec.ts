@@ -33,3 +33,11 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.content span').textContent).toContain('stock-transactions-app app is running!');
   });
 });
+
+  // Todo
+  // Add one test of each type
+
+  // Tests
+  // Check we get an error if the 
+  // Check the transaction is updated in the table correctly
+  // Check adding a new transaction on the api works correc

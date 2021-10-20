@@ -53,6 +53,8 @@ export class AppComponent implements OnInit {
   createTransaction() {
     const newTransaction: NewTransaction = emptyTransaction();
 
+    console.log('form date: ', this.transactionForm.controls.date.value)
+
     newTransaction.date = new Date(this.transactionForm.controls.date.value).toISOString();
     newTransaction.type = this.convertTransactionTypeApi(this.transactionForm.controls.type.value);
     
@@ -137,7 +139,7 @@ export class AppComponent implements OnInit {
 
   fillEditForm(transaction: Transaction) {
     this.selectedTransaction = transaction;
-    this.transactionForm.controls.date.setValue(new Date(transaction.date).toISOString());
+    this.transactionForm.controls.date.setValue(formatDate(transaction.date, 'yyyy-MM-dd', 'en-US'));
     this.transactionForm.controls.type.setValue(this.convertTransactionTypeForm(transaction.type));
     this.transactionForm.controls.security.setValue(transaction.security);
     this.transactionForm.controls.shares.setValue(transaction.shares);
@@ -219,8 +221,4 @@ export class AppComponent implements OnInit {
   // Add a confirmation of transaction deletion modal
   // Show error message if updating/adding failed, finish handleError method
   // Add another input on the form for the time of the transaction
-
-  // Todo
-  // Get date filling in the right value
-  // Add one test of each type
 }
