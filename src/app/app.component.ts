@@ -138,6 +138,18 @@ export class AppComponent implements OnInit {
 
   }
 
+  isCashflowPositive(transaction: Transaction) {
+    return transaction.cashflow > 0;
+  }
+
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  abs(number) {
+    return Math.abs(number);
+  }
+
 
   // Further work could include:
   // Form validation

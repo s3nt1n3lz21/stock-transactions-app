@@ -22,12 +22,12 @@
               <tbody>
                   <tr *ngFor="let transaction of transactions">
                       <th scope="row">{{transaction.id}}</th>
-                      <td>{{transaction.date| date:'YY MM DD hh:mm a z'}}</td>
-                      <td>{{transaction.type}}</td>
+                      <td>{{transaction.date| date:'dd-MM-yyyy hh:mm a'}}</td>
+                      <td>{{capitalize(transaction.type)}}</td>
                       <td><span class="text-muted">{{transaction.security}}</span></td>
                       <td class="text-right"><span class="text-muted">{{transaction.shares}}</span></td>
-                      <td class="text-right">&pound;{{transaction.value}}</td>
-                      <td class="text-right text-success">+&pound;{{transaction.cashflow}}</td>
+                      <td class="text-right">&pound;{{transaction.value/100 | number : '1.2-2'}}</td>
+                      <td class="text-right text-success green" [ngClass]="{'red': transaction.cashflow < 0}">{{transaction.cashflow > 0 ? '+' : '-'}}&pound;{{abs(transaction.cashflow/100) | number : '1.2-2'}}</td>
                       <td class="text-right"><a href="#" (click)="fillEditForm(transaction)">Edit</a></td>
                       <td class="text-right"><a href="#" (click)="deleteTransaction(transaction.id)">Delete</a></td>
                   </tr>
@@ -35,7 +35,7 @@
               <tfoot>
                   <tr>
                       <td colspan="6">Cumulative cashflow</td>
-                      <td class="text-right">&pound;{{cumulativeCashflow}}</td>
+                      <td class="text-right green" [ngClass]="{'red': cumulativeCashflow < 0}">&pound;{{cumulativeCashflow/100 | number : '1.2-2'}}</td>
                       <td colspan="2">&nbsp;</td>
                   </tr>
               </tfoot>
