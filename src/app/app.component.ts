@@ -117,7 +117,7 @@ export class AppComponent implements OnInit {
     this.transactionForm.controls.type.setValue(this.convertTransactionTypeForm(transaction.type));
     this.transactionForm.controls.security.setValue(transaction.security);
     this.transactionForm.controls.shares.setValue(transaction.shares);
-    this.transactionForm.controls.value.setValue(transaction.value);
+    this.transactionForm.controls.value.setValue(transaction.value/100);
     this.editMode = true;
   }
 
