@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from './api.service';
-import { Transaction } from './ITransaction';
+import { emptyTransaction, Transaction, TransactionForm, TransactionType } from './ITransaction';
 
 
 @Component({
@@ -25,15 +25,13 @@ export class AppComponent implements OnInit {
     private _fb: FormBuilder
   ) {}
 
-  transactionForm = this._fb.group({
+  transactionForm: TransactionForm = this._fb.group({
     date: '',
     type: '',
     security: '',
     shares: 0,
     value: 0,
   });
-
-  // 
 
   ngOnInit() {
     this._apiService.getTransactions().subscribe((response: { transactions: Transaction[]}) => {
@@ -51,37 +49,61 @@ export class AppComponent implements OnInit {
     this.cumulativeCashflow = cashflow;
   }
 
-  createTransaction(transaction: Transaction) {
-    this._apiService.createTransaction(transaction).subscribe((response) => {
-      console.log('response: ', response);
-    })
-  
-    this.showAddedAlert = true;
-    setTimeout(() => {
-      this.showAddedAlert = false;
-    }, 3000);
+  createTransaction() {
+    const newTransaction: Transaction = {
+      ...emptyTransaction(),
+      ...this.transactionForm.value
+    };
+    newTransaction.cashflow = this.calculateTransactionCashflow(newTransaction);
+
+    this._apiService.createTransaction(newTransaction).subscribe(
+      (response) => {
+        console.log('response: ', response);
+        this.showAddedAlert = true;
+        setTimeout(() => {
+          this.showAddedAlert = false;
+        }, 3000);
+      },
+      (error) => {
+        this.handleError(error);
+      }
+    )
   }
 
-  updateTransaction(transaction: Transaction) {
-    this._apiService.updateTransaction(transaction).subscribe((response) => {
-      console.log('response: ', response);
-    })
-    
-    this.showUpdatedAlert = true;
-    setTimeout(() => {
-      this.showUpdatedAlert = false;
-    }, 3000);
+  updateTransaction() {
+    const editedTransaction: Transaction = {
+      ...this.selectedTransaction,
+      ...this.transactionForm.value
+    };
+    editedTransaction.cashflow = this.calculateTransactionCashflow(editedTransaction);
+
+    this._apiService.updateTransaction(editedTransaction).subscribe(
+      (response) => {
+        console.log('response: ', response);
+        this.showUpdatedAlert = true;
+        setTimeout(() => {
+          this.showUpdatedAlert = false;
+        }, 3000);
+      },
+      (error) => {
+        this.handleError(error);
+      }
+    )
   }
 
   deleteTransaction(transactionId: string) {
-    this._apiService.deleteTransaction(transactionId).subscribe((response) => {
-      console.log('response: ', response);
-    })
-
-    this.showDeletedAlert = true;
-    setTimeout(() => {
-      this.showDeletedAlert = false;
-    }, 3000);
+    this._apiService.deleteTransaction(transactionId).subscribe(
+      (response) => {
+        console.log('response: ', response);
+        this.showDeletedAlert = true;
+        setTimeout(() => {
+          this.showDeletedAlert = false;
+        }, 3000);
+      },
+      (error) => {
+        this.handleError(error);
+      }
+    )
   }
 
   fillEditForm(transaction: Transaction) {
@@ -96,18 +118,40 @@ export class AppComponent implements OnInit {
 
   submit() {
     if (this.editMode) {
-      this.updateTransaction(this.transactionForm.value);
+      this.updateTransaction();
     } else {
-      this.createTransaction(this.transactionForm.value);
+      this.createTransaction();
     }
 
     this.recalculateCashflow();
   }
 
+  calculateTransactionCashflow(transaction: Transaction) {
+    if (transaction.type == TransactionType.Buy || transaction.type == TransactionType.Withdrawal) {
+      return -transaction.value;
+    } else {
+      return transaction.value;
+    }
+  }
+
+  handleError(error) {
+
+  }
+
+
   // Further work could include:
   // Form validation
   // Add a confirmation of transaction deletion modal
+  // Show error message if updating/adding failed, finish handleError method
 
   // Todo
-  // Recalculate cashflow for a transaction when editing it
+  // Set the id of the transaction based on whats returned
+  // Delete should remove it from our apps list if deletion successful
+  // Add should add it to our apps list if successful
+  // Update should update it on our app if successful api
+  // Get dropdown showing correct value
+  // Get date filling in the right value
+  // Format the dates and other formatting
+  // Set data types of api responses
+  // Add one test of each type
 }

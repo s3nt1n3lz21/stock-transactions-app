@@ -9,9 +9,9 @@
               <thead>
                   <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Date</th>
+                      <th class="date" scope="col">Date</th>
                       <th scope="col">Type</th>
-                      <th scope="col">Security</th>
+                      <th class="security" scope="col">Security</th>
                       <th scope="col" class="text-right">Shares</th>
                       <th scope="col" class="text-right">Value</th>
                       <th scope="col" class="text-right">Cashflow</th>
@@ -22,7 +22,7 @@
               <tbody>
                   <tr *ngFor="let transaction of transactions">
                       <th scope="row">{{transaction.id}}</th>
-                      <td>{{transaction.date}}</td>
+                      <td>{{transaction.date| date:'YY MM DD hh:mm a z'}}</td>
                       <td>{{transaction.type}}</td>
                       <td><span class="text-muted">{{transaction.security}}</span></td>
                       <td class="text-right"><span class="text-muted">{{transaction.shares}}</span></td>
@@ -79,9 +79,11 @@
                       <input formControlName="value" type="number" class="form-control" id="value">
                   </div>
               </div>
-              <button *ngIf="!editMode" type="submit" class="btn btn-primary">Add transaction</button>
-              <button *ngIf="editMode" type="submit" class="btn btn-primary">Update transaction</button>
-              <button *ngIf="editMode" class="btn btn-primary" (click)="editMode = false">Cancel</button>
+              <div class="form-group">
+                <button *ngIf="!editMode" type="submit" class="btn btn-primary">Add transaction</button>
+                <button *ngIf="editMode" type="submit" class="btn btn-primary">Update transaction</button>
+                <button *ngIf="editMode" class="btn btn-primary" (click)="editMode = false">Cancel</button>
+              </div>
           </form>
       </div>
   </div>
