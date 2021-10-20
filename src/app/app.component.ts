@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
     this.recalculateCashflow();
   }
 
-  calculateTransactionCashflow(transaction: Transaction) {
+  calculateTransactionCashflow(transaction: Transaction | NewTransaction) {
     if (transaction.type == 'buy' || transaction.type == 'withdrawal') {
       return -transaction.value;
     } else {

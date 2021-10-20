@@ -41,6 +41,3 @@ export class ApiService {
 // Caching api responses and prevent calling the api again only every 15 min etc
 // Having a baseURL and Adding parameters to the getTransactions function to narrow down results e.g. for particular portfolios
 // Adding authorisation to the headers
-
-// Todo 
-// Create response types
