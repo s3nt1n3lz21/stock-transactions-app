@@ -11,27 +11,25 @@ export class ApiService {
         private _http: HttpClient,
     ) {}
 
-
-
-    public getTransactions(): Observable<any> {
+    public getTransactions(): Observable<{ transactions: Transaction[] }> {
         const _url = `https://transactions-challenge.test.stockopedia.com//api/v1/transactions`;
-        return this._http.get(_url);
+        return this._http.get<{ transactions: Transaction[] }>(_url);
     }
 
-    public createTransaction(transaction: Transaction): Observable<any> {
+    public createTransaction(transaction: Transaction): Observable<Transaction> {
         const _url = `https://transactions-challenge.test.stockopedia.com//api/v1/transactions`;
         const headers = new HttpHeaders({
             'Content-Type': 'application/json; charset=utf-8'
         });
-        return this._http.post(_url, transaction, { headers: headers });
+        return this._http.post<Transaction>(_url, transaction, { headers: headers });
     }
 
-    public updateTransaction(transaction: Transaction): Observable<any> {
+    public updateTransaction(transaction: Transaction): Observable<Transaction> {
         const _url = `https://transactions-challenge.test.stockopedia.com//api/v1/transactions/` + transaction.id;
         const headers = new HttpHeaders({
             'Content-Type': 'application/json; charset=utf-8'
         });
-        return this._http.put(_url, transaction, { headers: headers });
+        return this._http.put<Transaction>(_url, transaction, { headers: headers });
     }
 
     public deleteTransaction(transactionId: string) {
