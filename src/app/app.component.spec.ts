@@ -61,7 +61,12 @@ describe('AppComponent', () => {
 
   // HTML
   it('should display the correct number of transactions', () => {
+    component.transactions = cloneDeep(transactions);
 
+    fixture.detectChanges();
+
+    const transactionRows = fixture.debugElement.nativeElement.querySelectorAll('.row');
+    expect(transactionRows.length).toEqual(transactions.length);
   });
 });
 
