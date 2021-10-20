@@ -137,8 +137,8 @@ export class AppComponent implements OnInit {
 
   fillEditForm(transaction: Transaction) {
     this.selectedTransaction = transaction;
-    this.transactionForm.controls.date.setValue(transaction.date);
-    this.transactionForm.controls.type.setValue(transaction.type);
+    this.transactionForm.controls.date.setValue(new Date(transaction.date).toISOString());
+    this.transactionForm.controls.type.setValue(this.convertTransactionTypeForm(transaction.type));
     this.transactionForm.controls.security.setValue(transaction.security);
     this.transactionForm.controls.shares.setValue(transaction.shares);
     this.transactionForm.controls.value.setValue(transaction.value);
@@ -196,6 +196,23 @@ export class AppComponent implements OnInit {
    } 
   }
 
+  convertTransactionTypeForm(transactionType: TransactionType): string {
+    switch(transactionType) { 
+      case 'withdrawal': { 
+         return 'Withdraw';
+      }
+      case 'buy': { 
+        return 'Buy';
+      }
+      case 'sell': { 
+        return 'Sell';
+      }
+      case 'deposit': { 
+        return 'Deposit';
+      }
+   } 
+  }
+
 
   // Further work could include:
   // Form validation
@@ -204,8 +221,6 @@ export class AppComponent implements OnInit {
   // Add another input on the form for the time of the transaction
 
   // Todo
-  // Set the id of the transaction based on whats returned
-  // Get dropdown showing correct value
   // Get date filling in the right value
   // Add one test of each type
 }
